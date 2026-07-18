@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>RISE — Surya Namaskar</title>
+  <meta name="description" content="RISE: An immersive wellness experience that gamifies Surya Namaskar.">
+  <meta name="theme-color" content="#0B0F17">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- ===== BACKGROUNDS ===== -->
+  <div class="bg-layer" id="homeBg"></div>
+  <div class="bg-layer" id="workoutBg"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- ===== AUTHENTICATION SCREEN ===== -->
+  <div class="screen screen--auth active" id="authScreen">
+    <div class="screen-inner screen-inner--center">
+      <div class="auth-header">
+        <h2 class="auth-brand">RISE</h2>
+        <p class="auth-subtitle">Elevate Your Daily Practice</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tabLogin">Sign In</button>
+          <button class="auth-tab" id="tabSignup">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <div class="auth-form" id="loginForm">
+          <div class="input-group">
+            <label for="loginEmail">Email Address</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com">
+          </div>
+          <div class="input-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••">
+          </div>
+          <div class="auth-links">
+            <a href="#" id="showForgotLink">Forgot Password?</a>
+          </div>
+          <button class="btn-start" id="loginFormSubmit" style="margin-top: 16px;">Sign In</button>
+        </div>
+
+        <!-- Signup Form -->
+        <div class="auth-form hidden" id="signupForm">
+          <div class="input-group">
+            <label for="signupName">Full Name</label>
+            <input type="text" id="signupName" placeholder="Your Name">
+          </div>
+          <div class="input-group">
+            <label for="signupEmail">Email Address</label>
+            <input type="email" id="signupEmail" placeholder="you@example.com">
+          </div>
+          <div class="input-group">
+            <label for="signupPassword">Password (6+ chars)</label>
+            <input type="password" id="signupPassword" placeholder="••••••••">
+          </div>
+          <button class="btn-start" id="signupFormSubmit" style="margin-top: 20px;">Sign Up</button>
+        </div>
+
+        <!-- Forgot Form -->
+        <div class="auth-form hidden" id="forgotForm">
+          <p class="auth-help-text">Enter your email and we'll send you a link to reset your password.</p>
+          <div class="input-group">
+            <label for="forgotEmail">Email Address</label>
+            <input type="email" id="forgotEmail" placeholder="you@example.com">
+          </div>
+          <button class="btn-start" id="forgotFormSubmit" style="margin-top: 16px;">Send Reset Link</button>
+          <div class="auth-links" style="justify-content: center; margin-top: 16px;">
+            <a href="#" id="backToLoginLink">Back to Sign In</a>
+          </div>
+        </div>
+
+        <div class="auth-divider">
+          <span>or</span>
+        </div>
+
+        <button class="btn-guest" id="guestLoginBtn">Continue as Guest</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HOME SCREEN ===== -->
+  <div class="screen screen--home" id="homeScreen">
+    <div class="screen-inner">
+      <section class="hero">
+        <p class="hero__greeting" id="greeting">Good Morning</p>
+        <h1 class="hero__brand">RISE</h1>
+      </section>
+
+      <!-- TODAY'S GOAL CARD -->
+      <div class="today-goal-card" id="homeGoalCard">
+        <!-- Row 1: Icon + Title + XP badge -->
+        <div class="tgc-header">
+          <div class="tgc-icon-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="tgc-title-block">
+            <span class="tgc-eyebrow">Today's Goal</span>
+            <span class="tgc-title" id="homeGoalTitle">3 Sets</span>
+          </div>
+          <span class="tgc-xp-badge" id="homeGoalXpEstimate">+150 XP</span>
+        </div>
+
+        <!-- Row 2: Progress fraction + streak -->
+        <div class="tgc-meta">
+          <span class="tgc-progress-text" id="homeGoalProgressText">🎯 0 / 3 Sets</span>
+          <span class="tgc-streak" id="homeStreakTag">🔥 <span id="homeStreakVal">0</span> day streak</span>
+        </div>
+
+        <!-- Row 3: Animated progress bar -->
+        <div class="tgc-bar-track">
+          <div class="tgc-bar-fill" id="homeGoalProgressFill"></div>
+        </div>
+
+        <!-- Row 4: Reward label -->
+        <p class="tgc-reward-label" id="homeGoalRewardLabel">Complete your goal to earn a +20 XP bonus</p>
+      </div>
+      
+      <!-- QUICK START & CONTINUE BUTTONS -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+        <button class="btn-secondary" id="quickStartBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.8"><polygon points="5 3 19 12 5 21"/></svg>
+          Quick Start
+        </button>
+        <button class="btn-secondary" id="continueLastBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/></svg>
+          Resume Last
+        </button>
+      </div>
+
+      <!-- SESSION CONFIGURATION CARD -->
+      <div class="config-card">
+        <h3 class="config-card__title">Session Configuration</h3>
+        
+        <div class="config-items">
+          <!-- Stepper: Sets -->
+          <div class="config-item">
+            <div class="config-item__details">
+              <span class="config-item__name">Number of Sets</span>
+              <span class="config-item__desc">Target rounds (1 - 50)</span>
+            </div>
+            <div class="stepper">
+              <button class="stepper__btn" id="configSetsMinus" aria-label="Decrease">−</button>
+              <span class="stepper__val" id="configSetsVal">3</span>
+              <button class="stepper__btn" id="configSetsPlus" aria-label="Increase">+</button>
+            </div>
+          </div>
+
+          <!-- Stepper: Seconds per pose -->
+          <div class="config-item">
+            <div class="config-item__details">
+              <span class="config-item__name">Seconds Per Pose</span>
+              <span class="config-item__desc">Pose hold duration (5 - 60s)</span>
+            </div>
+            <div class="stepper">
+              <button class="stepper__btn" id="configSecMinus" aria-label="Decrease">−</button>
+              <span class="stepper__val" id="configSecVal">8</span>
+              <button class="stepper__btn" id="configSecPlus" aria-label="Increase">+</button>
+            </div>
+          </div>
+
+          <!-- Stepper: Rest Between Sets -->
+          <div class="config-item">
+            <div class="config-item__details">
+              <span class="config-item__name">Rest Between Sets</span>
+              <span class="config-item__desc">Breathing rest (0 - 120s)</span>
+            </div>
+            <div class="stepper">
+              <button class="stepper__btn" id="configRestMinus" aria-label="Decrease">−</button>
+              <span class="stepper__val" id="configRestVal">15s</span>
+              <button class="stepper__btn" id="configRestPlus" aria-label="Increase">+</button>
+            </div>
+          </div>
+
+          <!-- Stepper: Countdown Before Start -->
+          <div class="config-item">
+            <div class="config-item__details">
+              <span class="config-item__name">Countdown Before Start</span>
+              <span class="config-item__desc">Get ready timer (3 - 10s)</span>
+            </div>
+            <div class="stepper">
+              <button class="stepper__btn" id="configCdMinus" aria-label="Decrease">−</button>
+              <span class="stepper__val" id="configCdVal">5s</span>
+              <button class="stepper__btn" id="configCdPlus" aria-label="Increase">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Summary -->
+        <div class="config-summary">
+          <div class="summary-col">
+            <span class="summary-val" id="summaryPoses">36</span>
+            <span class="summary-lbl">Total Poses</span>
+          </div>
+          <div class="summary-col">
+            <span class="summary-val" id="summaryDuration">~5m</span>
+            <span class="summary-lbl">Est. Time</span>
+          </div>
+          <div class="summary-col">
+            <span class="summary-val" id="summaryRest">30s</span>
+            <span class="summary-lbl">Total Rest</span>
+          </div>
+          <div class="summary-col">
+            <span class="summary-val" id="summaryCalories">151</span>
+            <span class="summary-lbl">Est. Calories</span>
+          </div>
+        </div>
+      </div>
+      
+      <button class="btn-start" id="startConfigBtn" style="margin-top: 10px; margin-bottom: 16px; flex-shrink: 0;">Start Custom Session</button>
+
+      <!-- RECENT ACTIVITY SECTION -->
+      <div class="home-section-header" style="margin-top: 8px; margin-bottom: 8px;">
+        <h3>Recent Activity</h3>
+      </div>
+      <div class="recent-activity-container" id="recentActivityList" style="margin-bottom: 90px;">
+        <!-- Recent logs will be rendered here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WORKOUT SCREEN ===== -->
+  <div class="screen screen--workout" id="workoutScreen">
+    <div class="screen-inner">
+      <!-- Countdown overlay -->
+      <div class="countdown-overlay" id="workoutCountdownOverlay">
+        <div class="countdown-circle">
+          <span class="countdown-num" id="workoutCountdownNumber">5</span>
+        </div>
+        <p class="countdown-tip">Prepare for Pranamasana...</p>
+      </div>
+
+      <!-- Rest Overlay Between Sets -->
+      <div class="rest-overlay" id="workoutRestOverlay">
+        <h2 class="rest-title">Set Completed!</h2>
+        <p class="rest-subtitle">Relax and focus on your breath</p>
+        
+        <div class="rest-circle-wrap">
+          <svg class="rest-svg" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="6"/>
+            <circle class="rest-circle-prog" id="restRingCircle" cx="60" cy="60" r="50" fill="none" stroke="#FFB000" stroke-width="6" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+          </svg>
+          <div class="rest-time-center">
+            <span class="rest-seconds" id="restTimerCount">15</span>
+            <span class="rest-label">seconds</span>
+          </div>
+        </div>
+        
+        <p class="rest-next-label" id="restNextSetLabel">Next Set Starting In...</p>
+        
+        <div style="display: flex; gap: 12px; margin-top: 32px; width: 80%;">
+          <button class="btn-secondary" id="skipRestBtn" style="border-radius: 100px; padding: 12px 24px;">Skip Rest</button>
+          <button class="btn-start" id="continueRestBtn" style="border-radius: 100px; padding: 12px 24px; box-shadow: none;">Continue</button>
+        </div>
+      </div>
+
+      <!-- Normal Workout Interface -->
+      <header class="wo-header">
+        <button class="wo-header__btn" id="woClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="wo-progress-bar"><div class="wo-progress-fill" id="woProgressFill"></div></div>
+        <button class="wo-header__btn" id="woBell" style="pointer-events: none; opacity: 0.3;" aria-label="Sound">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+      </header>
+      
+      <div class="timer-area">
+        <div class="timer-ring-wrap">
+          <svg class="timer-svg" viewBox="0 0 220 220">
+            <defs>
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#D4AF37"/>
+                <stop offset="25%" stop-color="#FFF2CD"/>
+                <stop offset="50%" stop-color="#AA771C"/>
+                <stop offset="75%" stop-color="#FBF5B7"/>
+                <stop offset="100%" stop-color="#8A5A19"/>
+              </linearGradient>
+              <filter id="ringGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#D4AF37" flood-opacity="0.5"/>
+              </filter>
+            </defs>
+            <circle cx="110" cy="110" r="98" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="10"/>
+            <circle class="timer-ring-prog" id="timerRing" cx="110" cy="110" r="98" fill="none" stroke="url(#ringGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="615.75" stroke-dashoffset="0" transform="rotate(-90 110 110)" filter="url(#ringGlow)"/>
+          </svg>
+          <div class="timer-center">
+            <div class="timer-set" id="timerSet">Set 1</div>
+            <div class="timer-count" id="timerCount">008</div>
+            <div class="timer-rep" id="timerRep">1 / 12 Poses</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pose Image from assets -->
+      <div class="pose-visual" id="poseVisual">
+        <img id="poseImage" src="assets/poses/pose-01-pranamasana.png.png" alt="Yoga Pose">
+      </div>
+
+      <!-- Next Pose Premium Card -->
+      <div class="wo-next-pose-card" id="woNextPosePreview">
+        <span class="wo-next-pose-label">Next</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,176,0,0.5)" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <span class="wo-next-pose-name" id="woNextPoseName">Hasta Uttanasana</span>
+      </div>
+      
+      <div class="wo-info-row">
+        <div class="wo-info-col" style="flex: 2;">
+          <div class="wo-info-col__label">Pose Name</div>
+          <div class="wo-info-col__val" id="woPoseName">Pranamasana</div>
+          <div class="wo-info-col__sub" id="woSanskritName">प्रणामासन (Prayer Pose)</div>
+        </div>
+        <div class="wo-info-col">
+          <div class="wo-info-col__label">Current Step</div>
+          <div class="wo-info-col__val" id="woStep">1 of 12</div>
+        </div>
+        <div class="wo-info-col">
+          <div class="wo-info-col__label">Overall</div>
+          <div class="wo-info-col__val" id="woProgress">1/1 Sets</div>
+        </div>
+      </div>
+      
+      <div class="wo-controls">
+        <button class="wo-ctrl wo-ctrl--sm" id="woPrev" aria-label="Previous"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="wo-ctrl wo-ctrl--lg" id="woPlayPause" aria-label="Play/Pause">
+          <svg id="icoPlay" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
+          <svg id="icoPause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <button class="wo-ctrl wo-ctrl--sm" id="woMore" aria-label="More"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STATISTICS SCREEN ===== -->
+  <div class="screen screen--stats" id="statsScreen">
+    <div class="screen-inner">
+      <section class="section-title">
+        <h2 class="sub-screen-header">Performance Analytics</h2>
+      </section>
+
+      <!-- Consistency Widgets Grid -->
+      <div class="stats-summary-grid">
+        <div class="stats-card">
+          <span class="stats-card-lbl">Consistency</span>
+          <span class="stats-card-val" id="statsConsistency">0%</span>
+        </div>
+        <div class="stats-card">
+          <span class="stats-card-lbl">Total Sessions</span>
+          <span class="stats-card-val" id="statsTotalSessions">0</span>
+        </div>
+        <div class="stats-card">
+          <span class="stats-card-lbl">Practice Time</span>
+          <span class="stats-card-val" id="statsTotalPractice">0m</span>
+        </div>
+        <div class="stats-card">
+          <span class="stats-card-lbl">Avg Duration</span>
+          <span class="stats-card-val" id="statsAvgDuration">0m</span>
+        </div>
+      </div>
+
+      <!-- Streaks Card -->
+      <div class="stats-streaks-card">
+        <div class="streak-data-item">
+          <span class="s-label">Current Streak</span>
+          <span class="s-value" id="statsCurrentStreak">0</span>
+        </div>
+        <div class="streak-divider"></div>
+        <div class="streak-data-item">
+          <span class="s-label">Longest Streak</span>
+          <span class="s-value" id="statsLongestStreak">0</span>
+        </div>
+        <div class="streak-divider"></div>
+        <div class="streak-data-item">
+          <span class="s-label">Perfect Weeks</span>
+          <span class="s-value" id="statsPerfectWeeks">0</span>
+        </div>
+      </div>
+
+      <!-- Chart: Weekly Activity -->
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Weekly Activity (Practice Minutes)</h3>
+        <div class="chart-container" id="statsWeeklyChart"></div>
+      </div>
+
+      <!-- Chart: Monthly Activity -->
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Monthly Activity (Completed Sets)</h3>
+        <div class="chart-container" id="statsMonthlyChart"></div>
+      </div>
+
+      <!-- Contribution Calendar -->
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Activity Map (GitHub Style)</h3>
+        <p class="chart-desc">Completed workouts colored in shades of gold</p>
+        <div class="calendar-wrapper" id="statsCalendarContainer"></div>
+      </div>
+
+      <!-- Detailed Metrics Row -->
+      <div class="detail-row-stats">
+        <div class="detail-stat-box">
+          <span class="d-val" id="statsTotalCalories">0 kcal</span>
+          <span class="d-lbl">Energy Burnt</span>
+        </div>
+        <div class="detail-stat-box">
+          <span class="d-val" id="statsAvgSets">0.0</span>
+          <span class="d-lbl">Avg Sets / Session</span>
+        </div>
+      </div>
+
+      <!-- History Log List -->
+      <div class="history-list-header">
+        <h3>Workout History</h3>
+      </div>
+      <div class="history-list" id="statsHistoryList" style="margin-bottom: 80px;">
+        <!-- Workout logs will render here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ACHIEVEMENTS SCREEN ===== -->
+  <div class="screen screen--achievements" id="achievementsScreen">
+    <div class="screen-inner">
+      <section class="section-title">
+        <h2 class="sub-screen-header">Milestones & Badges</h2>
+      </section>
+
+      <div class="achievements-grid" id="achievementsGrid" style="margin-bottom: 80px;">
+        <!-- Achievement Badges will be generated in JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PROFILE SCREEN ===== -->
+  <div class="screen screen--profile" id="profileScreen">
+    <div class="screen-inner">
+      <section class="profile-header">
+        <div class="avatar-wrap">
+          <div class="profile-avatar" id="profileAvatar">🧘</div>
+        </div>
+        <h2 class="profile-name" id="profileName">Guest Yogi</h2>
+        <span class="profile-email" id="profileEmail">guest_yogi@rise.app</span>
+      </section>
+
+      <!-- Level Progress Card -->
+      <div class="level-card">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span class="level-lbl">Current Level</span>
+          <span class="level-val" id="profileLevel">Beginner</span>
+        </div>
+        <div class="wo-progress-bar" style="margin-top: 10px; height: 8px; background: rgba(255,255,255,0.05);">
+          <div class="wo-progress-fill" id="profileXpProgress" style="width: 0%;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 8px;">
+          <span class="level-xp-progress" id="profileXpLabel">0 XP to next level</span>
+          <span class="level-xp-value" id="profileLevelInfo">0 XP</span>
+        </div>
+        <span class="profile-email" id="profileLevelSub" style="margin-top: 4px; display: block; font-size: 11px;">0 XP total</span>
+      </div>
+
+      <!-- Streaks Card -->
+      <div class="profile-streaks">
+        <div class="p-streak-item">
+          <span class="p-streak-val" id="profileCurrentStreak">0</span>
+          <span class="p-streak-lbl" id="profileStreakText">days streak</span>
+        </div>
+        <div class="p-streak-divider"></div>
+        <div class="p-streak-item">
+          <span class="p-streak-val" id="profileLongestStreak">0</span>
+          <span class="p-streak-lbl">longest streak</span>
+        </div>
+        <div class="p-streak-divider"></div>
+        <div class="p-streak-item">
+          <span class="p-streak-val" id="profileTotalSessions">0</span>
+          <span class="p-streak-lbl">sessions</span>
+        </div>
+        <div class="p-streak-divider"></div>
+        <div class="p-streak-item">
+          <span class="p-streak-val" id="profilePracticeTime">0m</span>
+          <span class="p-streak-lbl">practiced</span>
+        </div>
+      </div>
+
+      <!-- Settings Cards -->
+      <div class="settings-card">
+        <h3 class="settings-title">Practice Settings</h3>
+        
+        <div class="settings-items">
+          <div class="settings-item">
+            <span>Meditation Music</span>
+            <label class="switch">
+              <input type="checkbox" id="settingsMusic" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="settings-item">
+            <span>Voice Guidance</span>
+            <label class="switch">
+              <input type="checkbox" id="settingsVoice" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="settings-item">
+            <span>Haptic Feedback</span>
+            <label class="switch">
+              <input type="checkbox" id="settingsHaptics" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="settings-item">
+            <span>Auto Pause (Tab Hidden)</span>
+            <label class="switch">
+              <input type="checkbox" id="settingsAutoPause" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="settings-item select-item">
+            <span>Reminder Notification</span>
+            <input type="time" id="settingsReminder" class="settings-input-time" value="08:00">
+          </div>
+
+          <div class="settings-item select-item">
+            <span>Language</span>
+            <select id="settingsLanguage" class="settings-select">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+              <option value="es">Español</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- General Info Card -->
+      <div class="settings-card" style="margin-top: 16px;">
+        <h3 class="settings-title">General</h3>
+        <div class="settings-items">
+          <button class="settings-btn-link" id="aboutBtn">About RISE</button>
+          <button class="settings-btn-link" id="privacyBtn">Privacy Policy</button>
+        </div>
+      </div>
+
+      <!-- Log out -->
+      <button class="btn-secondary" id="settingsLogoutBtn" style="margin-top: 24px; margin-bottom: 100px; color: #ff5959; border-color: rgba(255,89,89,0.2);">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- ===== COMPLETE SCREEN ===== -->
+  <div class="screen screen--complete" id="completeScreen">
+    <div class="screen-inner screen-inner--center">
+      <div class="done-icon" style="margin-bottom: 16px;">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#FFB000" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+      </div>
+      <h2 class="done-title">Session Complete</h2>
+      <p class="done-sub" id="doneSub" style="margin-bottom: 24px;">Namaste. Excellent practice today.</p>
+      
+      <!-- Premium Completion Metric Grid -->
+      <div class="done-stats-grid">
+        <div class="done-grid-item">
+          <div class="done-grid-val" id="completeSets">1</div>
+          <div class="done-grid-lbl">Sets</div>
+        </div>
+        <div class="done-grid-item">
+          <div class="done-grid-val" id="completePoses">12</div>
+          <div class="done-grid-lbl">Poses</div>
+        </div>
+        <div class="done-grid-item">
+          <div class="done-grid-val" id="completeDuration">02:15</div>
+          <div class="done-grid-lbl">Duration</div>
+        </div>
+        <div class="done-grid-item">
+          <div class="done-grid-val" id="completeCalories">50</div>
+          <div class="done-grid-lbl">Calories</div>
+        </div>
+        <div class="done-grid-item" style="grid-column: span 2;">
+          <div class="done-grid-val" id="completeXp" style="color: #FFB000;">+50 XP</div>
+          <div class="done-grid-lbl">XP Earned</div>
+        </div>
+        <div class="done-grid-item">
+          <div class="done-grid-val" id="completeCurrentStreak">2</div>
+          <div class="done-grid-lbl">Streak</div>
+        </div>
+        <div class="done-grid-item">
+          <div class="done-grid-val" id="completeLongestStreak">5</div>
+          <div class="done-grid-lbl">Longest</div>
+        </div>
+      </div>
+
+      <!-- Achievement Unlocked Banner -->
+      <div class="badge-unlock-banner" id="completeAchievementsUnlock">Unlocked a new Badge!</div>
+
+      <button class="btn-start" id="doneBtn" style="margin-top: 16px;">Back to Home</button>
+    </div>
+  </div>
+
+  <!-- ===== BOTTOM NAVIGATION ===== -->
+  <nav class="bottom-nav hidden" id="bottomNav">
+    <button class="nav-item active" id="navHomeBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" id="navStatsBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Stats</span>
+    </button>
+    <button class="nav-item" id="navAchievementsBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34M12 2a4 4 0 0 1 4 4v5a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/></svg>
+      <span>Badges</span>
+    </button>
+    <button class="nav-item" id="navProfileBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <!-- ===== APPLICATION SCRIPTS ===== -->
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/workout.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
