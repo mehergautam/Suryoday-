@@ -10,7 +10,7 @@
 
 ---
 
-🚀 **Live Demo:** https://surynamaskar.netlify.app
+🚀 **Live Demo:**https://dailysurya.netlify.app/
 ## 📖 Overview
 
 **Suryoday** is a modern wellness application that guides users through the complete **12-step Surya Namaskar** sequence using a premium, distraction-free interface.
