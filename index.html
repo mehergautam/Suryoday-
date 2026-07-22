@@ -8,6 +8,8 @@
   <meta name="theme-color" content="#0B0F17">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/png" href="./assets/suryanamskar_logo.png">
+  <link rel="apple-touch-icon" href="./assets/suryanamskar_logo.png">
   <link rel="manifest" href="./manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +26,9 @@
   <div class="screen screen--auth active" id="authScreen">
     <div class="screen-inner screen-inner--center">
       <div class="auth-header">
+        <div class="brand-mark" aria-label="RISE logo">
+          <img src="./assets/suryanamskar_logo.png" alt="RISE logo" class="brand-mark__logo">
+        </div>
         <h2 class="auth-brand">RISE</h2>
         <p class="auth-subtitle">Elevate Your Daily Practice</p>
       </div>
@@ -93,8 +98,13 @@
   <div class="screen screen--home" id="homeScreen">
     <div class="screen-inner">
       <section class="hero">
-        <p class="hero__greeting" id="greeting">Good Morning</p>
-        <h1 class="hero__brand">RISE</h1>
+        <div class="hero__brand-row">
+          <img src="./assets/suryanamskar_logo.png" alt="RISE logo" class="hero__logo">
+          <div class="hero__brand-block">
+            <p class="hero__greeting" id="greeting">Good Morning</p>
+            <h1 class="hero__brand">RISE</h1>
+          </div>
+        </div>
       </section>
 
       <!-- TODAY'S GOAL CARD -->

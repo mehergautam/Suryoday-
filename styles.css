@@ -126,6 +126,31 @@ body {
    ========================================================== */
 .hero { margin-bottom: 0; margin-top: 12px; }
 
+.hero__brand-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.hero__logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+.hero__brand-block {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .quick-actions {
   gap: 10px;
   margin-bottom: 14px;
@@ -631,6 +656,15 @@ body {
     padding-right: 16px;
   }
 
+  .hero__brand-row {
+    gap: 10px;
+  }
+
+  .hero__logo {
+    width: 40px;
+    height: 40px;
+  }
+
   .hero {
     margin-top: 8px;
   }
@@ -805,6 +839,24 @@ body {
 .auth-header {
   text-align: center;
   margin-bottom: 28px;
+}
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.2);
+  margin-bottom: 12px;
+  padding: 8px;
+}
+.brand-mark__logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .auth-brand {
   font-size: 42px;
