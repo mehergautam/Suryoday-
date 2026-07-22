@@ -106,15 +106,49 @@
     });
   }
 
+  function initVisitorCounter() {
+    const counter = document.getElementById('visitorCounter');
+    const countEl = document.getElementById('visitorCount');
+    if (!counter || !countEl) return;
+
+    const storageKey = 'rise_visitor_count';
+    let count = 1;
+
+    try {
+      count = parseInt(localStorage.getItem(storageKey) || '0', 10) + 1;
+      localStorage.setItem(storageKey, String(count));
+    } catch (e) {
+      count = (window.__riseVisitorCount || 0) + 1;
+      window.__riseVisitorCount = count;
+    }
+
+    countEl.textContent = String(count);
+    counter.classList.add('visible');
+  }
+
+  function registerServiceWorker() {
+    if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
+
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+
   // Initialize all elements once content is loaded
   document.addEventListener('DOMContentLoaded', () => {
     // 1. Preload and trim images in background
     preloadAndTrimPoses();
+
+    // 2. Initialize visitor counter
+    initVisitorCounter();
     
-    // 2. Initialize UI layout and bindings
+    // 3. Initialize UI layout and bindings
     window.RISE_UI.init();
     
-    // 3. Verify streaks on startup
+    // 4. Verify streaks on startup
     window.RISE_Stats.checkAndUpdateStreak();
+
+    // 5. Register PWA service worker
+    registerServiceWorker();
   });
 })(window);

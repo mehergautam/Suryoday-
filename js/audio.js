@@ -204,25 +204,9 @@
       }, fadeTime * 1000);
     },
 
-    // 6. Voice synthesis announcements
+    // 6. Voice synthesis announcements (Disabled per requirements)
     speak(text) {
-      const settings = window.RISE_Storage.getSettings();
-      if (!settings.voiceEnabled || !('speechSynthesis' in window)) return;
-
-      // Cancel any ongoing speaking immediately
-      window.speechSynthesis.cancel();
-
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.95; // slightly slower, calming voice rate
-      utterance.pitch = 1.0;
-      utterance.volume = 0.8;
-
-      // Choose a calming voice if available (e.g. Google US English, Samantha, etc.)
-      const voices = window.speechSynthesis.getVoices();
-      const calmingVoice = voices.find(v => v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha') || v.lang.startsWith('en'));
-      if (calmingVoice) utterance.voice = calmingVoice;
-
-      window.speechSynthesis.speak(utterance);
+      return;
     }
   };
 

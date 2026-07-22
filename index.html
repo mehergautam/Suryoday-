@@ -6,6 +6,9 @@
   <title>RISE — Surya Namaskar</title>
   <meta name="description" content="RISE: An immersive wellness experience that gamifies Surya Namaskar.">
   <meta name="theme-color" content="#0B0F17">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="./manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -124,7 +127,7 @@
       </div>
       
       <!-- QUICK START & CONTINUE BUTTONS -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+      <div class="quick-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
         <button class="btn-secondary" id="quickStartBtn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.8"><polygon points="5 3 19 12 5 21"/></svg>
           Quick Start
@@ -500,9 +503,9 @@
           </div>
 
           <div class="settings-item">
-            <span>Voice Guidance</span>
-            <label class="switch">
-              <input type="checkbox" id="settingsVoice" checked>
+            <span>Voice Guidance <span class="coming-soon-badge">Coming Soon</span></span>
+            <label class="switch" aria-label="Voice Guidance">
+              <input type="checkbox" id="settingsVoice" checked disabled>
               <span class="slider"></span>
             </label>
           </div>
@@ -524,8 +527,8 @@
           </div>
 
           <div class="settings-item select-item">
-            <span>Reminder Notification</span>
-            <input type="time" id="settingsReminder" class="settings-input-time" value="08:00">
+            <span>Reminder Notification <span class="coming-soon-badge">Coming Soon</span></span>
+            <input type="time" id="settingsReminder" class="settings-input-time" value="08:00" disabled>
           </div>
 
           <div class="settings-item select-item">
@@ -620,6 +623,14 @@
       <span>Profile</span>
     </button>
   </nav>
+
+  <div class="visitor-counter" id="visitorCounter" aria-label="Visitor count">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 12s3-5 10-5 10 5 10 5-3 5-10 5-10-5-10-5Z"></path>
+      <circle cx="12" cy="12" r="3"></circle>
+    </svg>
+    <span id="visitorCount">1</span>
+  </div>
 
   <!-- ===== APPLICATION SCRIPTS ===== -->
   <script src="js/storage.js"></script>

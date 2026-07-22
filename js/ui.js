@@ -96,11 +96,11 @@
 
       // Stats summaries
       const history = window.RISE_Storage.getHistory();
-      $('profileTotalSessions').textContent = history.length;
-      $('profileTotalSets').textContent = history.reduce((sum, h) => sum + h.sets, 0);
+      if ($('profileTotalSessions')) $('profileTotalSessions').textContent = history.length;
+      if ($('profileTotalSets')) $('profileTotalSets').textContent = history.reduce((sum, h) => sum + h.sets, 0);
       
       const totalMinutes = history.reduce((sum, h) => sum + (h.duration / 60), 0);
-      $('profilePracticeTime').textContent = Math.round(totalMinutes) + 'm';
+      if ($('profilePracticeTime')) $('profilePracticeTime').textContent = Math.round(totalMinutes) + 'm';
     },
 
     updateHomeGoalCard() {
@@ -467,7 +467,6 @@
       if (event === 'workout_tick') {
         if (state.status === 'countdown') {
           $('workoutCountdownNumber').textContent = state.countdownSecLeft;
-          // Scale countdown number animation
           $('workoutCountdownNumber').style.transform = 'scale(1.2)';
           setTimeout(() => {
             $('workoutCountdownNumber').style.transform = 'scale(1)';
@@ -475,13 +474,17 @@
         } else if (state.status === 'active') {
           $('workoutCountdownOverlay').classList.remove('active');
           $('timerCount').textContent = String(state.secLeft).padStart(3, '0');
-          
-          const frac = 1 - (state.secLeft / config.secPerPose);
+
+          const durationMs = Math.max(1, state.phaseDurationMs || config.secPerPose * 1000);
+          const remainingMs = Math.max(0, state.phaseRemainingMs || durationMs);
+          const frac = Math.min(1, Math.max(0, 1 - (remainingMs / durationMs)));
           $('timerRing').style.strokeDashoffset = CIRC * (1 - frac);
         } else if (state.status === 'rest') {
           $('restTimerCount').textContent = state.restSecLeft;
           const restCIRC = 2 * Math.PI * 50;
-          const restFrac = 1 - (state.restSecLeft / config.restBetweenSets);
+          const restDurationMs = Math.max(1, state.phaseDurationMs || config.restBetweenSets * 1000);
+          const restRemainingMs = Math.max(0, state.phaseRemainingMs || restDurationMs);
+          const restFrac = Math.min(1, Math.max(0, 1 - (restRemainingMs / restDurationMs)));
           $('restRingCircle').style.strokeDashoffset = restCIRC * (1 - restFrac);
         }
       }
